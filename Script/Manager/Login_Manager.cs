@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Login_Manager : MonoBehaviour
 {
     public TMP_InputField loginIDInput;
     public TMP_InputField loginPasswordInput;
     public GameObject PasswordErrorPanel;
+    public TextMeshProUGUI ErrorPanelText;
 
     private static Login_Manager instance;
 
@@ -52,6 +54,14 @@ public class Login_Manager : MonoBehaviour
     public void LoginPasswordError() 
     {
         PasswordErrorPanel.SetActive(true);
+        ErrorPanelText.text = "Password Error";
     }
+
+    public void ServerError(Exception ex)
+    {
+        PasswordErrorPanel.SetActive(true);
+        ErrorPanelText.text = ex.Message;
+    }
+
 
 }

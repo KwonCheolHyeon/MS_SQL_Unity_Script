@@ -8,19 +8,20 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     private string PlayerName;
+    public string GetPlayerName() { return PlayerName; }
     private int PlayerLv;
     private int PlayerMaxHp;
     private int PlayerNowHp;
     private int PlayerAtk;
     private float PlayerPosX;
     private float PlayerPosY;
-    private Vector3 playerPosition;
 
     public Image hpBar;
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI levelText;
 
+    public float moveSpeed = 5f;
     //로그인시 사용
     public void LoginSettingPlayer(string pName, int pLv, int pMaxHp,int pNowHp, int pAtk, float pPosX,float pPosY) 
     {
@@ -46,17 +47,22 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
-        playerPosition.x = PlayerPosX;
-        playerPosition.y = PlayerPosY;
-        playerPosition.z = 0.0f;
-
-        StateUpdate();
+        transform.position = new Vector3(PlayerPosX, PlayerPosY, transform.position.z);
+        InvokeRepeating("StateUpdate", 0.1f, 0.1f);
+        //StateUpdate();
     }
 
     
     void Update()
     {
-        
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        // 이동 방향 계산
+        Vector3 moveDirection = new Vector3(horizontalInput, verticalInput, 0f).normalized;
+
+        // 플레이어 이동
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
     }
 
     //상태 업데이트 한꺼번에 처리
@@ -76,10 +82,12 @@ public class PlayerScript : MonoBehaviour
         }
 
         //서버에 저장
-        SQL_Connect_Manager.Instance.UpdatePlayerData(PlayerName, PlayerLv,PlayerMaxHp,PlayerNowHp,PlayerAtk,PlayerPosX,PlayerPosY);
-
+        SQL_Connect_Manager.Instance.UpdatePlayerData(PlayerName, PlayerLv,PlayerMaxHp,PlayerNowHp,PlayerAtk, transform.position.x, transform.position.y, true);
     }
 
-   
+    private void OnApplicationQuit()
+    {
+        SQL_Connect_Manager.Instance.UpdatePlayerData(PlayerName, PlayerLv, PlayerMaxHp, PlayerNowHp, PlayerAtk, transform.position.x, transform.position.y, false);
+    }
 
 }
