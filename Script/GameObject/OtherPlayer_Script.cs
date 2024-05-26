@@ -14,6 +14,7 @@ public class OtherPlayer_Script : MonoBehaviour
     private int PlayerAtk;
     private float PlayerPosX;
     private float PlayerPosY;
+    private Vector3 previousPosition;
     private Vector3 playerPosition;
 
     public Image hpBar;
@@ -23,6 +24,7 @@ public class OtherPlayer_Script : MonoBehaviour
 
     public void SettingOhterPlayer(string pName, int pLv, int pMaxHp, int pNowHp, int pAtk, float pPosX, float pPosY)
     {
+        previousPosition = transform.position;
         PlayerName = pName;
         PlayerLv = pLv;
         PlayerMaxHp = pMaxHp;
@@ -30,7 +32,9 @@ public class OtherPlayer_Script : MonoBehaviour
         PlayerAtk = pAtk;
         PlayerPosX = pPosX;
         PlayerPosY = pPosY;
-
+        playerPosition.x = PlayerPosX;
+        playerPosition.y = PlayerPosY;
+        playerPosition.z = 0.0f;
         StateUpdate();
 
     }
@@ -58,7 +62,7 @@ public class OtherPlayer_Script : MonoBehaviour
         {
             levelText.text = "Lv " + PlayerLv.ToString();
         }
-        transform.position = new Vector3(PlayerPosX, PlayerPosY, transform.position.z);
+        transform.position = Vector3.Lerp(previousPosition, playerPosition, Time.deltaTime * 100f);
 
         //SQL_Connect_Manager.Instance.UpdatePlayerData(PlayerName, PlayerLv, PlayerMaxHp, PlayerNowHp, PlayerAtk, PlayerPosX, PlayerPosY, true);
     }

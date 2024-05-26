@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
 
     private List<OtherPlayer_Script> otherPlayerComponents;
-    private List<GameObject> otherPlayerPool;
-    private int otherPlayerPoolCount = 10;
+    //private List<GameObject> otherPlayerPool;
+    //private int otherPlayerPoolCount = 10;
 
     void Start()
     {
@@ -44,14 +44,14 @@ public class GameManager : MonoBehaviour
 
         //다른 플레이어들만 미리 만들어 놓기
         otherPlayerComponents = new List<OtherPlayer_Script>();
-        otherPlayerPool = new List<GameObject>();
-        for (int i = 0; i < otherPlayerPoolCount; i++)
-        {
-            GameObject player = Instantiate(playerPrefab);
-            player.SetActive(false);
-            player.GetComponent<PlayerScript>().enabled = false;
-            otherPlayerPool.Add(player);
-        }
+        //otherPlayerPool = new List<GameObject>();
+        //for (int i = 0; i < otherPlayerPoolCount; i++)
+        //{
+        //    GameObject player = Instantiate(playerPrefab);
+        //    player.SetActive(false);
+        //    player.GetComponent<PlayerScript>().enabled = false;
+        //    otherPlayerPool.Add(player);
+        //}
 
     }
 

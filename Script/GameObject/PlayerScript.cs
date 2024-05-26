@@ -49,6 +49,10 @@ public class PlayerScript : MonoBehaviour
     {
         transform.position = new Vector3(PlayerPosX, PlayerPosY, transform.position.z);
         InvokeRepeating("StateUpdate", 0.1f, 0.1f);
+        if (nameText != null)
+        {
+            nameText.text = PlayerName;
+        }
         //StateUpdate();
     }
 
@@ -72,10 +76,7 @@ public class PlayerScript : MonoBehaviour
         {
             hpText.text = PlayerNowHp.ToString() + " / " + PlayerMaxHp.ToString();
         }
-        if (nameText != null)
-        {
-            nameText.text = PlayerName;
-        }
+       
         if (levelText != null)
         {
             levelText.text = "Lv " + PlayerLv.ToString();
@@ -87,7 +88,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SQL_Connect_Manager.Instance.UpdatePlayerData(PlayerName, PlayerLv, PlayerMaxHp, PlayerNowHp, PlayerAtk, transform.position.x, transform.position.y, false);
+        SQL_Connect_Manager.Instance.UpdatePlayerData(nameText.text, PlayerLv, PlayerMaxHp, PlayerNowHp, PlayerAtk, transform.position.x, transform.position.y, false);
     }
 
 }
